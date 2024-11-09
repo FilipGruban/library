@@ -1,11 +1,8 @@
-import { User } from './User.ts';
 import { Book } from './Book.ts';
-import { Library } from './Library.ts';
+import {Reader} from "@/classes/Reader.ts";
 
-export class Librarian extends User {
-    constructor( name: string, private library: Library) {
-        super(name);
-    }
+export class Librarian extends Reader {
+
 
     addBook(book: Book): void {
         this.library.addBook(book);

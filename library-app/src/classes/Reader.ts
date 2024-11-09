@@ -8,7 +8,7 @@ export class Reader extends User {
     private borrowedBooks: Book[] = [];
     private reservations: Book[] = [];
 
-    constructor(name: string, private library: Library) {
+    constructor(name: string, protected library: Library) {
         super(name);
     }
 
@@ -40,6 +40,10 @@ export class Reader extends User {
             this.borrowedBooks.splice(index, 1);
             book.isAvailable = true;
         }
+    }
+
+    getAllBooks(): Book[] {
+        return this.library.getAllBooks();
     }
 
     searchBooks(criteria: Partial<Book>): Book[] {
