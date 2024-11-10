@@ -52,12 +52,25 @@ export class Library {
     }
 
     filterBooks(criteria: Partial<Book>): Book[] {
-        return this.getAvailableBooks().filter(book => {
-            return (
-                (criteria.title?.toLowerCase() ? book.title.toLowerCase().includes(criteria.title) : true) &&
-                (criteria.author?.toLowerCase() ? book.author.toLowerCase().includes(criteria.author) : true) &&
-                (criteria.genre?.toLowerCase() ? book.genre.toLowerCase().includes(criteria.genre) : true)
-            );
-        });
+
+        const {title, author, genre} = criteria;
+
+        let filteredBooks: Book[] = this.catalog;
+
+        if(title){
+            filteredBooks = filteredBooks.filter((book: Book) => book.title.toLowerCase().includes(title.toLowerCase()));
+        }
+
+        if(author){
+            filteredBooks = filteredBooks.filter((book: Book) => book.author.toLowerCase().includes(author.toLowerCase()));
+        }
+
+        if(genre){
+            filteredBooks = filteredBooks.filter((book: Book) => book.genre.toLowerCase().includes(genre.toLowerCase()));
+        }
+
+        console.log(filteredBooks);
+
+        return filteredBooks;
     }
 }

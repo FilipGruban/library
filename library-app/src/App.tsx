@@ -6,15 +6,20 @@ import {Book} from "@/classes/Book.ts"
 import {Admin} from "@/classes/Admin.ts";
 import BookList from "@/components/BookList.tsx";
 import {UserContext} from "@/lib/UserContext.ts";
+import BookFilter from "@/components/BookFilter.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 const library = new Library();
 const user = new Librarian("Johan", library);
 init();
 
 function App() {
+
   return (
     <UserContext.Provider value={user}>
-      <BookList />
+        <section className={"min-h-screen flex items-center justify-start flex-col"}>
+        <BookList/>
+        </section>
     </UserContext.Provider>
   )
 }
@@ -40,7 +45,7 @@ function init() {
   admin.getUsers()[0].borrowBook(book1);
   admin.getUsers()[1].borrowBook(book2);
   admin.getUsers()[2].borrowBook(book3);
-
+  user.borrowBook(book4);
 }
 
 

@@ -43,10 +43,22 @@ export class Reader extends User {
     }
 
     getAllBooks(): Book[] {
-        return this.library.getAllBooks();
+        return this.library.getAllBooks().filter((book:Book)=> {
+            if(!this.borrowedBooks.includes(book) && !this.reservations.includes(book)){
+                return book;
+            }
+        });
     }
 
     searchBooks(criteria: Partial<Book>): Book[] {
-        return this.library.filterBooks(criteria);
+        let filteredBooks: Book[] = this.library.filterBooks(criteria);
+
+        filteredBooks = filteredBooks.filter((book:Book)=> {
+            if(!this.borrowedBooks.includes(book) && !this.reservations.includes(book)){
+                return book;
+            }
+        });
+
+        return filteredBooks;
     }
 }
