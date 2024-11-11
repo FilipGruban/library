@@ -42,6 +42,9 @@ export class Reader extends User {
         }
     }
 
+    getBorrowedBooks():Book[]{
+        return this.borrowedBooks;
+    }
     getAllBooks(): Book[] {
         return this.library.getAllBooks().filter((book:Book)=> {
             if(!this.borrowedBooks.includes(book) && !this.reservations.includes(book)){

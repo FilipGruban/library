@@ -4,23 +4,24 @@ import {Librarian} from "@/classes/Librarian.ts";
 import {Book} from "@/classes/Book.ts"
 //import {Reader} from "@/classes/Reader.ts";
 import {Admin} from "@/classes/Admin.ts";
-import BookList from "@/components/BookList.tsx";
-import {UserContext} from "@/lib/UserContext.ts";
-import BookFilter from "@/components/BookFilter.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
+import ReadersPage from "@/components/ReadersPage.tsx";
 
 const library = new Library();
-const user = new Librarian("Johan", library);
+const user = new Librarian("Honzík", library);
 init();
 
 function App() {
 
+  if(!user){
+    return null;
+  }
+
+  if(user instanceof Admin){
+    return "admín"
+  }
+
   return (
-    <UserContext.Provider value={user}>
-        <section className={"min-h-screen flex items-center justify-start flex-col"}>
-        <BookList/>
-        </section>
-    </UserContext.Provider>
+      <ReadersPage user={user}/>
   )
 }
 
@@ -45,7 +46,6 @@ function init() {
   admin.getUsers()[0].borrowBook(book1);
   admin.getUsers()[1].borrowBook(book2);
   admin.getUsers()[2].borrowBook(book3);
-  user.borrowBook(book4);
 }
 
 

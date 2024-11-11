@@ -2,6 +2,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Book} from "@/classes/Book.ts";
 import {useState} from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 
 interface Props {
@@ -22,7 +23,7 @@ export default function BookFilter( {handleSearch}: Props) {
             <Input placeholder={"Title"} type={"text"} value={title} onChange={(e) => setTitle(e.target.value)}/>
             <Input placeholder={"Author"} type={"text"} value={author} onChange={(e) => setAuthor(e.target.value)}/>
             <Input placeholder={"Genre"} type={"text"} value={genre} onChange={(e) => setGenre(e.target.value)}/>
-            <Button onClick={() => onSearch()}>Search</Button>
+            <Button onClick={() => onSearch()}>Search <FaMagnifyingGlass/></Button>
         </div>
     )
 }

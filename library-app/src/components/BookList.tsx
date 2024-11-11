@@ -1,52 +1,36 @@
-import {useContext, useEffect, useState} from "react";
-import {UserContext} from "@/lib/UserContext.ts";
 //import {Reader} from "@/classes/Reader.ts";
 import {Book} from "@/classes/Book.ts";
-import {Admin} from "@/classes/Admin.ts";
-import { CgAddR } from "react-icons/cg";
-import {Librarian} from "@/classes/Librarian.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import BookFilter from "@/components/BookFilter.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
-import {Reader} from "@/classes/Reader.ts";
-import {cn} from "@/lib/utils.ts";
+import {useUser} from "@/lib/hooks.ts";
+import BookImage from "@/components/BookImage.tsx";
 
 
-export default function BookList() {
-    const user = useContext(UserContext);
-    if(!user || user instanceof Admin){
-        return null;
+export default function BookList({books, setBooks} : {books: Book[], setBooks :  React.Dispatch<React.SetStateAction<Book[]>>}) {
+    const user = useUser();
+
+    function handleBurrow(book:Book) {
+        user.borrowBook(book);
+        setBooks(user.getAllBooks());
     }
 
-    const [ books, setBooks ] = useState<Book[]>(user.getAllBooks());
-
-    function handleFilters(filters : Partial<Book>){
-        if(user instanceof Reader){
-            setBooks(user.searchBooks(filters));
-        }
-    }
     return (
         <div>
-            <BookFilter handleSearch={handleFilters}/>
-            <Separator orientation={"horizontal"}/>
             <section className={"w-[60vw] m-8"}>
                <Table>
                    <TableHeader>
                        <TableRow>
                                <TableHead></TableHead>
-                               <TableHead>Title</TableHead>
-                               <TableHead>Author</TableHead>
-                               <TableHead>Genre</TableHead>
+                               <TableHead className={"min-w-60"}>Title</TableHead>
+                               <TableHead className={"min-w-60"}>Author</TableHead>
+                               <TableHead className={"min-w-60"}>Genre</TableHead>
                                <TableHead className="text-right"></TableHead>
                        </TableRow>
                    </TableHeader>
@@ -58,7 +42,7 @@ export default function BookList() {
                                <TableCell className="font-medium">{book.title}</TableCell>
                                <TableCell>{book.author}</TableCell>
                                <TableCell>{book.genre}</TableCell>
-                               <BorrowButton isAvailable={book.isAvailable}/>
+                               <BorrowButton book={book} handleFunction={handleBurrow}/>
                            </TableRow>
                        ))}
                    </TableBody>
@@ -69,22 +53,18 @@ export default function BookList() {
 }
 
 
-function BookImage() {
-    return (
-        <TableCell>
-            <img className={"w-12"} src={"/book.webp"} alt="book" />
-        </TableCell>
-    )
+interface BorrowButtonProps {
+    book : Book;
+    handleFunction : (book:Book) => void;
 }
 
+function BorrowButton({book, handleFunction}: BorrowButtonProps  ) {
 
-
-function BorrowButton({isAvailable}: {isAvailable: boolean}  ) {
     return (
         <TableCell>
             {
-                isAvailable ?
-                    <Button className={"w-28"}>
+                book.isAvailable ?
+                    <Button className={"w-28"} onClick={() => handleFunction(book)}>
                         Borrow Book
                     </Button>
                     :
