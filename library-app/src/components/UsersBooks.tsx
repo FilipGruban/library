@@ -30,7 +30,7 @@ function UsersBooks( {borrowedBooks, handleReturn} : {borrowedBooks: Book[], han
                         <TableBody>
                             {borrowedBooks.map((book) => (
                                 <TableRow key={book.title}>
-                                    <BookImage/>
+                                    <BookImage {...book}/>
                                     <TableCell className="font-medium">{book.title}</TableCell>
                                     <TableCell>{book.author}</TableCell>
                                     <TableCell>{book.genre}</TableCell>
