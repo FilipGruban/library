@@ -12,7 +12,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {useUser} from "@/lib/hooks.ts";
+import {useUser} from "@/lib/hooks/useUser.ts";
 import BookImage from "@/components/BookImage.tsx";
 import {Librarian} from "@/classes/Librarian.ts";
 import ActionButton from "@/components/ActionButton.tsx";
@@ -50,7 +50,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
                             <TableBody>
                                 {books.map((book) => (
                                     <TableRow key={book.title}>
-                                        <BookImage/>
+                                        <BookImage {...book}/>
                                         <TableCell className="font-medium">{book.title}</TableCell>
                                         <TableCell>{book.author}</TableCell>
                                         <TableCell>{book.genre}</TableCell>

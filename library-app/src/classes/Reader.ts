@@ -57,7 +57,21 @@ export class Reader extends User {
     }
 
     searchBooks(criteria: Partial<Book>): Book[] {
-        let filteredBooks: Book[] = this.library.filterBooks(criteria);
+        const {title, author, genre} = criteria;
+
+        let filteredBooks: Book[] = this.library.getAllBooks();
+
+        if(title){
+            filteredBooks = filteredBooks.filter((book: Book) => book.title.toLowerCase().includes(title.toLowerCase()));
+        }
+
+        if(author){
+            filteredBooks = filteredBooks.filter((book: Book) => book.author.toLowerCase().includes(author.toLowerCase()));
+        }
+
+        if(genre){
+            filteredBooks = filteredBooks.filter((book: Book) => book.genre.toLowerCase().includes(genre.toLowerCase()));
+        }
 
         filteredBooks = filteredBooks.filter((book:Book)=> {
             if(!this.borrowedBooks.includes(book) && !this.reservations.includes(book)){

@@ -12,15 +12,17 @@ function ReadersPage({user}:{user: Reader | Librarian}){
 
     const [ books, setBooks ] = useState<Book[]>(user.getAllBooks());
     const [usersBooks, setUsersBooks] = useState<Book[]>(user.getBorrowedBooks());
+    const [activeFilters, setActiveFilters] = useState<Partial<Book>>({});
 
     function handleFilters(filters : Partial<Book>){
+        setActiveFilters(filters);
         setBooks(user.searchBooks(filters));
     }
 
     function handleReturn(book:Book){
         user.returnBook(book);
         setUsersBooks([...user.getBorrowedBooks()]);
-        setBooks(prevBooks => [...prevBooks, book]);
+        setBooks(user.searchBooks(activeFilters));
     }
 
     function handleBorrow(book:Book){
