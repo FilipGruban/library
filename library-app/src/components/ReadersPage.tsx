@@ -20,13 +20,13 @@ function ReadersPage({user}:{user: Reader | Librarian}){
     function handleReturn(book:Book){
         user.returnBook(book);
         setUsersBooks([...user.getBorrowedBooks()]);
-        setBooks([...user.getAllBooks()]);
+        setBooks(prevBooks => [...prevBooks, book]);
     }
 
     function handleBorrow(book:Book){
         user.borrowBook(book);
         setUsersBooks([...user.getBorrowedBooks()]);
-        setBooks([...user.getAllBooks()]);
+        setBooks(prevBooks => [...prevBooks].filter((e) => e !== book));
     }
 
     function handleAddBook(book : Book){

@@ -32,7 +32,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
 
     return (
         <div>
-            <section className={"w-[60vw]"}>
+            <section className={"w-[60vw] min-h-96"}>
                 <h1 className={"text-4xl tracking-tight text-center mt-8 mb-4"}>Library</h1>
                 {
                     books.length > 0 ?
@@ -63,7 +63,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
                                                     :
                                                     <ActionButton
                                                         className={"w-32 bg-white border-2 border-black hover:bg-gray-100 text-black"}
-                                                        handleClick={() => handleBorrow(book)}>
+                                                        handleClick={() => console.log()}>
                                                         Reserve
                                                     </ActionButton>
                                             }
@@ -74,7 +74,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
                             </TableBody>
                         </Table>
                         :
-                        <span>Empty</span>
+                        <p className={"text-center"}>No books found</p>
                 }
 
             </section>

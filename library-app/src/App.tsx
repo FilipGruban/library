@@ -5,9 +5,10 @@ import {Book} from "@/classes/Book.ts"
 //import {Reader} from "@/classes/Reader.ts";
 import {Admin} from "@/classes/Admin.ts";
 import ReadersPage from "@/components/ReadersPage.tsx";
+import {Reader} from "@/classes/Reader.ts";
 
 const library = new Library();
-const user = new Librarian("Honzík", library);
+const user = new Reader("Honzík", library);
 init();
 
 function App() {
