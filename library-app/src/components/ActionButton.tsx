@@ -1,10 +1,18 @@
-import {Button} from "@/components/ui/button.tsx";
+import {Button, ButtonProps} from "@/components/ui/button.tsx";
 
 
+interface ActionButtonProps extends React.PropsWithChildren {
+    handleClick: (...args: unknown[]) => unknown;
+}
 
-function ActionButton() {
+function ActionButton({handleClick, children, ...rest}: ActionButtonProps & ButtonProps) {
     return (
-        <Button>s</Button>
+        <Button
+            onClick={handleClick}
+            {...rest}
+        >
+            {children}
+        </Button>
     );
 }
 

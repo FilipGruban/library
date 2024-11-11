@@ -17,15 +17,33 @@ function ReadersPage({user}:{user: Reader | Librarian}){
         setBooks(user.searchBooks(filters));
     }
 
+    function handleReturn(book:Book){
+        user.returnBook(book);
+        setUsersBooks([...user.getBorrowedBooks()]);
+        setBooks([...user.getAllBooks()]);
+    }
+
+    function handleBorrow(book:Book){
+        user.borrowBook(book);
+        setUsersBooks([...user.getBorrowedBooks()]);
+        setBooks([...user.getAllBooks()]);
+    }
+
+    function handleAddBook(book : Book){
+        if(user instanceof Librarian){
+            user.addBook(book)
+            setBooks(user.getAllBooks());
+        }
+    }
 
     return (
         <section className={"min-h-screen flex items-center justify-start flex-col"}>
             <UserContext.Provider value={user}>
                 <BookFilter handleSearch={handleFilters}/>
+                <Separator orientation={"horizontal"} />
+                <BookList handleAddBook={handleAddBook} handleBorrow={handleBorrow} books={books}/>
                 <Separator orientation={"horizontal"}/>
-                <BookList books={books} setBooks={setBooks}/>
-                <Separator orientation={"horizontal"}/>
-                <UsersBooks borrowedBooks={usersBooks}/>
+                <UsersBooks handleReturn={handleReturn} borrowedBooks={usersBooks}/>
             </UserContext.Provider>
         </section>);
 }

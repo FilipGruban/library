@@ -11,6 +11,12 @@ export class Library {
         this.catalog = catalog;
     }
 
+    removeLoan(book: Book): void {
+        this.loans = this.loans.filter((loan : Loan) => {
+            loan.book != book;
+        })
+
+    }
     updateLoan(book : Book):void{
         const loan = this.loans.find((loan: Loan) => loan.book === book);
         if(!loan){

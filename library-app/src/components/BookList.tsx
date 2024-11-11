@@ -1,6 +1,9 @@
 //import {Reader} from "@/classes/Reader.ts";
+import { CgAddR } from "react-icons/cg";
 import {Book} from "@/classes/Book.ts";
 import {Button} from "@/components/ui/button.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
 import {
     Table,
     TableBody,
@@ -11,68 +14,129 @@ import {
 } from "@/components/ui/table"
 import {useUser} from "@/lib/hooks.ts";
 import BookImage from "@/components/BookImage.tsx";
+import {Librarian} from "@/classes/Librarian.ts";
+import ActionButton from "@/components/ActionButton.tsx";
+import {
+    Dialog, DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {useState} from "react";
 
-
-export default function BookList({books, setBooks} : {books: Book[], setBooks :  React.Dispatch<React.SetStateAction<Book[]>>}) {
+export default function BookList({books, handleBorrow, handleAddBook} : {books: Book[], handleBorrow :  (book:Book)=>void, handleAddBook:(book:Book) => void}) {
     const user = useUser();
-
-    function handleBurrow(book:Book) {
-        user.borrowBook(book);
-        setBooks(user.getAllBooks());
-    }
 
     return (
         <div>
-            <section className={"w-[60vw] m-8"}>
-               <Table>
-                   <TableHeader>
-                       <TableRow>
-                               <TableHead></TableHead>
-                               <TableHead className={"min-w-60"}>Title</TableHead>
-                               <TableHead className={"min-w-60"}>Author</TableHead>
-                               <TableHead className={"min-w-60"}>Genre</TableHead>
-                               <TableHead className="text-right"></TableHead>
-                       </TableRow>
-                   </TableHeader>
+            <section className={"w-[60vw]"}>
+                <h1 className={"text-4xl tracking-tight text-center mt-8 mb-4"}>Library</h1>
+                {
+                    books.length > 0 ?
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead></TableHead>
+                                    <TableHead className={"min-w-60"}>Title</TableHead>
+                                    <TableHead className={"min-w-60"}>Author</TableHead>
+                                    <TableHead className={"min-w-60"}>Genre</TableHead>
+                                    <TableHead className="text-right"></TableHead>
+                                </TableRow>
+                            </TableHeader>
 
-                   <TableBody>
-                       {books.map((book) => (
-                           <TableRow key={book.title}>
-                               <BookImage/>
-                               <TableCell className="font-medium">{book.title}</TableCell>
-                               <TableCell>{book.author}</TableCell>
-                               <TableCell>{book.genre}</TableCell>
-                               <BorrowButton book={book} handleFunction={handleBurrow}/>
-                           </TableRow>
-                       ))}
-                   </TableBody>
-               </Table>
+                            <TableBody>
+                                {books.map((book) => (
+                                    <TableRow key={book.title}>
+                                        <BookImage/>
+                                        <TableCell className="font-medium">{book.title}</TableCell>
+                                        <TableCell>{book.author}</TableCell>
+                                        <TableCell>{book.genre}</TableCell>
+                                        <TableCell>
+                                            {
+                                                book.isAvailable ?
+                                                    <ActionButton className={"w-32"} handleClick={() => handleBorrow(book)}>
+                                                        Borrow
+                                                    </ActionButton>
+                                                    :
+                                                    <ActionButton
+                                                        className={"w-32 bg-white border-2 border-black hover:bg-gray-100 text-black"}
+                                                        handleClick={() => handleBorrow(book)}>
+                                                        Reserve
+                                                    </ActionButton>
+                                            }
+
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        :
+                        <span>Empty</span>
+                }
+
             </section>
+            <div className={"text-center mb-8 mt-4"}>
+                {user instanceof Librarian &&
+                       <AddBookDialog handleAddBook={handleAddBook}/>
+                }
+            </div>
         </div>
     )
 }
 
 
-interface BorrowButtonProps {
-    book : Book;
-    handleFunction : (book:Book) => void;
-}
+function AddBookDialog({handleAddBook}:{handleAddBook: (book: Book) => void}){
 
-function BorrowButton({book, handleFunction}: BorrowButtonProps  ) {
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [genre, setGenre] = useState("");
 
-    return (
-        <TableCell>
-            {
-                book.isAvailable ?
-                    <Button className={"w-28"} onClick={() => handleFunction(book)}>
-                        Borrow Book
-                    </Button>
-                    :
-                    <Button className={"w-28 bg-white border-2 border-black text-black hover:bg-gray-100"}>
-                        Reserve
-                    </Button>
-            }
-
-        </TableCell>
+    return(
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline">Add Book <CgAddR/></Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Add book</DialogTitle>
+                    <DialogDescription>
+                        Type title, author and genre of book you want to add
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="Title" className="text-right">
+                            Title
+                        </Label>
+                        <Input id="Title" value={title} onChange={(e) => setTitle(e.target.value)} className="col-span-3"/>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="author" className="text-right">
+                            Author
+                        </Label>
+                        <Input id="author" value={author} onChange={(e) => setAuthor(e.target.value)} className="col-span-3"/>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="Genre" className="text-right">
+                            Genre
+                        </Label>
+                        <Input id="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} className="col-span-3"/>
+                    </div>
+                </div>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button onClick={() =>{
+                            setGenre("");
+                            setTitle("");
+                            setAuthor("");
+                            handleAddBook(new Book(title, author, genre));
+                        }}>Add book</Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }

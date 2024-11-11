@@ -18,12 +18,14 @@ export class Reader extends User {
     }
 
     borrowBook(book: Book): void {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 7);
+        if(book.isAvailable){
+            const currentDate = new Date();
+            currentDate.setDate(currentDate.getDate() + 7);
 
-        this.library.addLoan(new Loan(this, book, currentDate ));
-        this.borrowedBooks.push(book);
-        book.isAvailable = false;
+            this.library.addLoan(new Loan(this, book, currentDate ));
+            this.borrowedBooks.push(book);
+            book.isAvailable = false;
+        }
     }
 
     prolongLoan(bookToFind: Book): void {
@@ -39,6 +41,7 @@ export class Reader extends User {
         if (index !== -1) {
             this.borrowedBooks.splice(index, 1);
             book.isAvailable = true;
+            this.library.removeLoan(book);
         }
     }
 
