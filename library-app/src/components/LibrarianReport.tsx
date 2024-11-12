@@ -21,17 +21,15 @@ function LibrarianReport({books}: {books : Book[]}) {
     const user = useLibrarian();
 
     const [report, setReport] = useState<reportType>(user.generateReport());
-    const [date, setDate] = useState<Date | undefined>();
 
     useEffect(()=>{
-        console.log(date);
         setReport(user.generateReport());
-    },[books, date])
+    },[books])
 
     return (
         <>
         <h1 className={"text-4xl tracking-tight text-center mt-8 mb-4"}>Report</h1>
-        <div className="flex gap-8 min-w-[70vw]">
+        <div className="flex gap-8 min-w-[70vw] mb-12">
             <span className={"text-right flex flex-col w-1/2"}>
                 <h1 className={"text-2xl my-4"}>Total amount: {report.totalAmount}</h1>
                 <h1 className={"text-2xl my-4"}>Reserved amount: {report.reservedAmount}</h1>
@@ -45,11 +43,7 @@ function LibrarianReport({books}: {books : Book[]}) {
                 {   report.allLoans.length > 0 ?
                     report.allLoans.map((loan : Loan) => (
                         <div key={loan.book.title} className={"flex justify-between my-6"}>
-                            <p className={"flex items-center"}>{loan.book.title} is borrowed by {loan.reader.name} till {loan.dueTime.toLocaleDateString()}</p>
-                            <div>
-                                <DatePicker date={date} setDate={setDate} loan={loan}/>
-
-                            </div>
+                            <LoanRecord setReport={setReport} loan={loan}/>
                         </div>
                     ))
                     :
@@ -70,13 +64,36 @@ function LibrarianReport({books}: {books : Book[]}) {
         </>
     );
 }
+function LoanRecord({loan, setReport}: {loan:Loan, setReport: React.Dispatch<React.SetStateAction<reportType>>}){
+    const user = useLibrarian();
 
-function DatePicker({loan, date, setDate} : {loan : Loan, date : Date | undefined, setDate : React.Dispatch<React.SetStateAction<Date | undefined>>}) {
+    const [date, setDate] = useState<Date | undefined>();
+    useEffect(() => {
+        setReport(user.generateReport());
+    }, [date]);
+
+    return (
+        <>
+            <p className={"flex items-center"}>{loan.book.title} is borrowed
+                by {loan.reader.name} till {loan.dueTime.toLocaleDateString()}</p>
+            <div>
+                <DatePicker date={date} setDate={setDate} loan={loan}/>
+
+            </div>
+        </>
+    )
+}
+
+function DatePicker({loan, date, setDate}: {
+    loan: Loan,
+    date: Date | undefined,
+    setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
+}) {
     const user = useLibrarian();
 
 
     useEffect(() => {
-        if(date){
+        if (date) {
             user.changeLoan(loan, date);
         }
     }, [date]);

@@ -13,7 +13,7 @@ import ActionButton from "@/components/ActionButton.tsx";
 
 function UsersBooks( {reservedBooks, handleCancel} : {reservedBooks: Book[], handleCancel: (book: Book) => void}) {
     return (
-        <section className={"w-[60vw]"}>
+        <section className={"w-[60vw] mb-6"}>
             <h1 className={"text-4xl tracking-tight text-center mt-8 mb-4"}>Reserved Books</h1>
             {
                 reservedBooks.length > 0 ?

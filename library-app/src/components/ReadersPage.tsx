@@ -20,7 +20,7 @@ function ReadersPage({user}:{user: Reader | Librarian}){
     function handleReserve(book:Book){
         user.reserveBook(book);
         setUsersReservations(user.getReservedBooks());
-        setBooks([...user.getAllBooks()]);
+        setBooks([...user.searchBooks(activeFilters)]);
     }
 
     function handleFilters(filters : Partial<Book>){
@@ -49,7 +49,7 @@ function ReadersPage({user}:{user: Reader | Librarian}){
     function handleAddBook(book : Book){
         if(user instanceof Librarian){
             user.addBook(book)
-            setBooks(user.getAllBooks());
+            setBooks(user.searchBooks(activeFilters));
         }
     }
 

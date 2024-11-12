@@ -22,7 +22,9 @@ export class Librarian extends Reader {
     }
 
     changeLoan(loan:Loan,date : Date): void {
-        console.log(loan);
+        if(date < new Date){
+            return
+        }
         this.library.updateLoan(loan, date)
     }
 
