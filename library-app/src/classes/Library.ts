@@ -21,16 +21,8 @@ export class Library {
     removeLoan(book: Book): void {
         this.loans = this.loans.filter((loan : Loan) => loan.book !== book)
     }
-    updateLoan(book : Book):void{
-        const loan = this.loans.find((loan: Loan) => loan.book === book);
-        if(!loan){
-            return;
-        }
-
-        const loanDate = loan.dueTime;
-        loanDate.setDate(loanDate.getDate() + 7);
-
-        loan.dueTime = loanDate;
+    updateLoan(loan : Loan, date : Date):void{
+        this.loans[this.loans.indexOf(loan)].dueTime = date
     }
 
     getLoans():Loan[]{

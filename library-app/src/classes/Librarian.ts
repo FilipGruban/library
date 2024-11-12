@@ -2,6 +2,7 @@ import { Book } from './Book.ts';
 import {Reader} from "@/classes/Reader.ts";
 import {Loan} from "@/classes/Loan.ts";
 import {Reservation} from "@/classes/Reservation.ts";
+import {User} from "@/classes/User.ts";
 
 export class Librarian extends Reader {
 
@@ -18,6 +19,11 @@ export class Librarian extends Reader {
         const allLoans = this.library.getLoans();
         const allReservations = this.library.getReservations();
         return {borrowedAmount : borrowedBooksAmount, reservedAmount:reservedBooksAmount, totalAmount : totalBooksAmount, allLoans : allLoans, allReservations : allReservations};
+    }
+
+    changeLoan(loan:Loan,date : Date): void {
+        console.log(loan);
+        this.library.updateLoan(loan, date)
     }
 
 }

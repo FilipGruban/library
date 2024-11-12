@@ -40,14 +40,6 @@ export class Reader extends User {
         }
     }
 
-    prolongLoan(bookToFind: Book): void {
-        const book = this.borrowedBooks.find((book : Book) => book.title === bookToFind.title);
-        if(!book){
-            return;
-        }
-        this.library.updateLoan(book);
-    }
-
     returnBook(book: Book): void {
         const index = this.borrowedBooks.indexOf(book);
         if (index !== -1) {
