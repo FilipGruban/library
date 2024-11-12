@@ -13,7 +13,9 @@ export class Library {
     }
 
     removeReservation(user:Reader, book:Book): void {
-        this.reservations = this.reservations.filter((reservation : Reservation)=>(reservation.book !== book && reservation.reader !== user));
+        this.reservations = this.reservations.filter(reservation => {
+            return !(reservation.reader === user && reservation.book === book);
+        });
     }
 
     removeLoan(book: Book): void {

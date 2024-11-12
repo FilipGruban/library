@@ -1,17 +1,18 @@
 import {Reader} from "@/classes/Reader.ts";
 import {Librarian} from "@/classes/Librarian.ts";
-import BookList from "@/components/BookList.tsx";
-import UsersBooks from "@/components/UsersBooks.tsx";
+import BookList from "@/components/Tables/BookList.tsx";
+import UsersBooks from "@/components/Tables/UsersBooks.tsx";
 import {useState} from "react";
 import {Book} from "@/classes/Book.ts";
 import BookFilter from "@/components/BookFilter.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {UserContext} from "@/lib/UserContext.ts";
-import UsersReservations from "@/components/UsersReservations.tsx";
+import UsersReservations from "@/components/Tables/UsersReservations.tsx";
+import LibrarianReport from "@/components/LibrarianReport.tsx";
 
 function ReadersPage({user}:{user: Reader | Librarian}){
 
-    const [ books, setBooks ] = useState<Book[]>(user.getAllBooks());
+    const [books, setBooks ] = useState<Book[]>(user.getAllBooks());
     const [usersBooks, setUsersBooks] = useState<Book[]>(user.getBorrowedBooks());
     const [activeFilters, setActiveFilters] = useState<Partial<Book>>({});
     const [usersReservations, setUsersReservations] = useState(user.getReservedBooks());
@@ -29,6 +30,8 @@ function ReadersPage({user}:{user: Reader | Librarian}){
 
     function handleCancel(book:Book){
         user.cancelReservation(book)
+        setBooks([...user.searchBooks(activeFilters)]);
+        setUsersReservations(user.getReservedBooks());
     }
 
     function handleReturn(book:Book){
@@ -60,6 +63,12 @@ function ReadersPage({user}:{user: Reader | Librarian}){
                 <UsersBooks handleReturn={handleReturn} borrowedBooks={usersBooks}/>
                 <Separator orientation={"horizontal"}/>
                 <UsersReservations handleCancel={handleCancel} reservedBooks={usersReservations}/>
+                {user instanceof Librarian &&
+                    <>
+                        <Separator/>
+                        <LibrarianReport books={books}/>
+                    </>
+                }
             </UserContext.Provider>
         </section>);
 }

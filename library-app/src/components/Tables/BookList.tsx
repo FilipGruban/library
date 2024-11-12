@@ -11,7 +11,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table.tsx"
 import {useUser} from "@/lib/hooks/useUser.ts";
 import BookImage from "@/components/BookImage.tsx";
 import {Librarian} from "@/classes/Librarian.ts";
@@ -24,7 +24,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog.tsx"
 import {useState} from "react";
 
 export default function BookList({books, handleBorrow,handleReserve, handleAddBook} : {books: Book[], handleBorrow :  (book:Book)=>void, handleReserve:(book:Book) => void,handleAddBook:(book:Book) => void}) {
@@ -32,7 +32,7 @@ export default function BookList({books, handleBorrow,handleReserve, handleAddBo
 
     return (
         <div>
-            <section className={"w-[60vw] min-h-96"}>
+            <section className={"w-[60vw]"}>
                 <h1 className={"text-4xl tracking-tight text-center mt-8 mb-4"}>Library</h1>
                 {
                     books.length > 0 ?
@@ -57,12 +57,12 @@ export default function BookList({books, handleBorrow,handleReserve, handleAddBo
                                         <TableCell>
                                             {
                                                 book.isAvailable ?
-                                                    <ActionButton className={"w-32"} handleClick={() => handleBorrow(book)}>
+                                                    <ActionButton className={"w-36"} handleClick={() => handleBorrow(book)}>
                                                         Borrow
                                                     </ActionButton>
                                                     :
                                                     <ActionButton
-                                                        className={"w-32 bg-white border-2 border-black hover:bg-gray-100 text-black"}
+                                                        className={"w-36 bg-white border-2 border-black hover:bg-gray-100 text-black"}
                                                         handleClick={() => handleReserve(book)}>
                                                         Reserve
                                                     </ActionButton>

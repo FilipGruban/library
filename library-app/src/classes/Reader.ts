@@ -23,7 +23,6 @@ export class Reader extends User {
             this.reservations.splice(index, 1);
             this.library.removeReservation(this, book);
         }
-
     }
 
     getReservedBooks(): Book[] {

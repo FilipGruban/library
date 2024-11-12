@@ -1,19 +1,23 @@
 import { Book } from './Book.ts';
 import {Reader} from "@/classes/Reader.ts";
+import {Loan} from "@/classes/Loan.ts";
+import {Reservation} from "@/classes/Reservation.ts";
 
 export class Librarian extends Reader {
+
 
 
     addBook(book: Book): void {
         this.library.addBook(book);
     }
 
-    generateReport(): {available : number, borrowed : number, reserved : number, total : number} {
-        const availableBooks = this.library.getAvailableBooks().length;
-        const reservedBooks = this.library.getReservations().length;
-        const borrowedBooks = this.library.getLoans().length;
-        const totalBooks = this.library.getAllBooks().length;
-        return {available : availableBooks, borrowed : borrowedBooks, reserved:reservedBooks, total : totalBooks};
+    generateReport(): {borrowedAmount : number, reservedAmount : number, totalAmount : number, allLoans : Loan[], allReservations : Reservation[]} {
+        const reservedBooksAmount = this.library.getReservations().length;
+        const borrowedBooksAmount = this.library.getLoans().length;
+        const totalBooksAmount = this.library.getAllBooks().length;
+        const allLoans = this.library.getLoans();
+        const allReservations = this.library.getReservations();
+        return {borrowedAmount : borrowedBooksAmount, reservedAmount:reservedBooksAmount, totalAmount : totalBooksAmount, allLoans : allLoans, allReservations : allReservations};
     }
 
 }
