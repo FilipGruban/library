@@ -7,9 +7,24 @@ export class Library {
     private catalog: Book[] = [];
     private reservations: Reservation[] = [];
     private loans: Loan[] = [];
+    private users : Reader[] = [];
 
     constructor(catalog: Book[] = []) {
         this.catalog = catalog;
+    }
+
+    addUser(user: Reader): void {
+        this.users.push(user);
+    }
+
+    getUsers(): Reader[] {
+        return this.users;
+    }
+
+    removeUser(reader: Reader): void {
+        this.loans = this.loans.filter((e) => e.reader !== reader);
+        this.reservations = this.reservations.filter((e) => e.reader !== reader);
+        this.users = this.users.filter((e) => e.name !== reader.name);
     }
 
     removeReservation(user:Reader, book:Book): void {
@@ -47,10 +62,6 @@ export class Library {
 
     getAllBooks(): Book[] {
         return this.catalog;
-    }
-
-    getAvailableBooks(): Book[] {
-        return this.catalog.filter(book => book.isAvailable);
     }
 
 }

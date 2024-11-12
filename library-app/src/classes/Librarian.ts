@@ -2,7 +2,6 @@ import { Book } from './Book.ts';
 import {Reader} from "@/classes/Reader.ts";
 import {Loan} from "@/classes/Loan.ts";
 import {Reservation} from "@/classes/Reservation.ts";
-import {User} from "@/classes/User.ts";
 
 export class Librarian extends Reader {
 
