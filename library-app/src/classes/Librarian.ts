@@ -21,7 +21,7 @@ export class Librarian extends Reader {
     }
 
     changeLoan(loan:Loan,date : Date): void {
-        if(date < new Date){
+        if(date.getDate() < new Date().getDate() + 7) {
             return
         }
         this.library.updateLoan(loan, date)

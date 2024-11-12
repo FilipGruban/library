@@ -9,7 +9,7 @@ import AdminPage from "@/components/AdminPage.tsx";
 import {UserContext} from "@/lib/UserContext.ts";
 
 const library = new Library();
-const user = new Admin("Honzík", library);
+const user = new Librarian("Honzík", library);
 init();
 
 function App() {
@@ -54,6 +54,7 @@ function init() {
 
 
   admin.getUsers()[0].borrowBook(book1);
+  admin.getUsers()[1].reserveBook(book1);
   admin.getUsers()[1].borrowBook(book2);
   admin.getUsers()[2].borrowBook(book3);
 }
