@@ -8,7 +8,7 @@ import ReadersPage from "@/components/ReadersPage.tsx";
 import {Reader} from "@/classes/Reader.ts";
 
 const library = new Library();
-const user = new Reader("Honzík", library);
+const user = new Librarian("Honzík", library);
 init();
 
 function App() {

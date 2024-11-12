@@ -17,6 +17,19 @@ export class Reader extends User {
         this.library.addReservation(new Reservation(this, book));
     }
 
+    cancelReservation(book: Book): void {
+        const index = this.reservations.indexOf(book);
+        if(index !== -1){
+            this.reservations.splice(index, 1);
+            this.library.removeReservation(this, book);
+        }
+
+    }
+
+    getReservedBooks(): Book[] {
+        return this.reservations;
+    }
+
     borrowBook(book: Book): void {
         if(book.isAvailable){
             const currentDate = new Date();

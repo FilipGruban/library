@@ -1,6 +1,7 @@
 import { Book } from './Book.ts';
 import {Reservation} from "./Reservation.ts";
 import {Loan} from "./Loan.ts";
+import {Reader} from "@/classes/Reader.ts";
 
 export class Library {
     private catalog: Book[] = [];
@@ -9,6 +10,10 @@ export class Library {
 
     constructor(catalog: Book[] = []) {
         this.catalog = catalog;
+    }
+
+    removeReservation(user:Reader, book:Book): void {
+        this.reservations = this.reservations.filter((reservation : Reservation)=>(reservation.book !== book && reservation.reader !== user));
     }
 
     removeLoan(book: Book): void {

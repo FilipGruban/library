@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog"
 import {useState} from "react";
 
-export default function BookList({books, handleBorrow, handleAddBook} : {books: Book[], handleBorrow :  (book:Book)=>void, handleAddBook:(book:Book) => void}) {
+export default function BookList({books, handleBorrow,handleReserve, handleAddBook} : {books: Book[], handleBorrow :  (book:Book)=>void, handleReserve:(book:Book) => void,handleAddBook:(book:Book) => void}) {
     const user = useUser();
 
     return (
@@ -63,7 +63,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
                                                     :
                                                     <ActionButton
                                                         className={"w-32 bg-white border-2 border-black hover:bg-gray-100 text-black"}
-                                                        handleClick={() => console.log()}>
+                                                        handleClick={() => handleReserve(book)}>
                                                         Reserve
                                                     </ActionButton>
                                             }
@@ -74,7 +74,7 @@ export default function BookList({books, handleBorrow, handleAddBook} : {books: 
                             </TableBody>
                         </Table>
                         :
-                        <p className={"text-center"}>No books found</p>
+                        <p className={"text-center mb-4"}>No books found</p>
                 }
 
             </section>
